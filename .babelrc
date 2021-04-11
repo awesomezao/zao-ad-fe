@@ -1,0 +1,22 @@
+{
+  // "presets": ["@emotion/babel-preset-css-prop"],
+  "plugins": [
+    [
+      "@babel/plugin-transform-react-jsx",
+      {
+        "throwIfNamespace": false, // defaults to true
+        "runtime": "automatic", // defaults to classic
+        "importSource": "@emotion/react" // defaults to react
+      }
+    ],
+    [
+      "@emotion",
+      {
+        "sourceMap": true,
+        "autoLabel": "dev-only",
+        "labelFormat": "[filename]__[local]",
+        "cssPropOptimization": true
+      }
+    ]
+  ]
+}
