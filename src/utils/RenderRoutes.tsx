@@ -54,17 +54,21 @@ const RenderRoutes = ({
                 if (route.requireAuth && !isLogin) {
                   return <AuthPage />;
                 }
-                let renderChildRoutes = route.childRoutes ? (
-                  <RenderRoutes routes={route.childRoutes} isLogin={isLogin} />
-                ) : null;
+                const renderChildRoutes = () =>
+                  route.childRoutes ? (
+                    <RenderRoutes
+                      routes={route.childRoutes}
+                      isLogin={isLogin}
+                    />
+                  ) : null;
                 if (route.component) {
                   return (
                     <route.component {...props} {...extraProps} route={route}>
-                      {renderChildRoutes}
+                      {renderChildRoutes()}
                     </route.component>
                   );
                 }
-                return renderChildRoutes;
+                return renderChildRoutes();
               }}
             />
           );

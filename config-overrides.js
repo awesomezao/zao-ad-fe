@@ -15,21 +15,21 @@ const fs = require("fs");
 const appPath = (target) => path.resolve(__dirname, target);
 
 // 配置devServer,代理
-// const devServerConfig = () => config => {
-//   return {
-//     ...config,
-//     compress: true,
-//     proxy: {
-//       '/meeting/**': {
-//         target: 'http://www.ljhhhx.com:8080',
-//         changeOrigin: true,
-//         pathRewrite: {
-//           '^/meeting': '/meeting'
-//         }
-//       }
-//     }
-//   }
-// }
+const devServerConfig = () => config => {
+  return {
+    ...config,
+    compress: true,
+    proxy: {
+      '/apis/**': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/apis': '/'
+        }
+      }
+    }
+  }
+}
 
 module.exports = {
   webpack: override(
@@ -50,9 +50,9 @@ module.exports = {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     // useEslintRc(),
   ),
-  // devServer: overrideDevServer(
-  //   devServerConfig()
-  // ),
+  devServer: overrideDevServer(
+    devServerConfig()
+  ),
   paths: (paths, env) => {
     return paths;
   },
