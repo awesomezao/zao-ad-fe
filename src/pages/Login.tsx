@@ -4,17 +4,21 @@ import { Button, Form, Input, Checkbox, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import AuthWrapper from "@/components/AuthWrapper";
 import { useRequest } from "ahooks";
+import { useUser } from "@/hooks/useUser";
 
 const { Item, useForm } = Form;
 
 const Login = () => {
   const history = useHistory();
   const [form] = useForm();
+  const { refreshUserStatus } = useUser();
   const loginR = useRequest(login, {
     manual: true,
     onSuccess: (res) => {
-      message.success('登陆成功')
-      window.localStorage.setItem('user_token',res.token)
+      message.success("登陆成功,即将跳转");
+      window.localStorage.setItem("user_token", res.token);
+      history.push("/");
+      refreshUserStatus();
     },
   });
   const handleSubmit = async () => {
@@ -37,10 +41,7 @@ const Login = () => {
           hasFeedback
           rules={[{ required: true, message: "请输入密码" }]}
         >
-          <Input.Password
-            prefix={<LockOutlined />}
-            placeholder="请输入密码"
-          />
+          <Input.Password prefix={<LockOutlined />} placeholder="请输入密码" />
         </Item>
         <Item>
           <Item name="remember" valuePropName="checked" noStyle>

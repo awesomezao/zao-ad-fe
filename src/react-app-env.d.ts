@@ -19,10 +19,10 @@ export interface FormRenderSchema<T = any> {
 }
 
 export interface IUser {
-  _id:string;
+  _id: string;
   username: string;
   password: string;
   role: string;
-  name:string;
-  avatar:string;
+  name: string;
+  avatar: string;
 }

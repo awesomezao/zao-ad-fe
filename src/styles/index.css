@@ -1,7 +1,33 @@
 #root {
-  height: 100vh;
+  /* height: 100vh; */
+  min-height: 100vh;
+  background-color: #f5f6f7;
 }
 
-.box-shadow{
+.box-shadow {
   box-shadow: 0 1px 3px 0 rgb(18 18 18 / 10%);
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1;
+  color: #313233;
+}
+
+.notice {
+  font-size: 12px;
+  /* transform: scale(.9);
+  margin-left: -12px; */
+  line-height: 20px;
+  color: rgba(0, 0, 0, 0.43137254901960786);
+}
+
+.ant-form-item-explain,
+.ant-form-item-extra {
+  font-size: 12px !important;
+}
+
+.bold {
+  font-weight: bold;
 }

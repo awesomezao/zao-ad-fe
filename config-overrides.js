@@ -6,7 +6,7 @@ const {
   injectBabelPlugin,
   useBabelRc,
   useEslintRc,
-  // disableEsLint,
+  disableEsLint,
 } = require("customize-cra");
 // const { addReactRefresh } = require("customize-cra-react-refresh")
 const path = require("path");

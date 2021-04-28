@@ -4,11 +4,12 @@ import { useRecoilState } from "recoil";
 import { userState } from "@/globalState/user";
 import styled from "@emotion/styled";
 import { css } from "@emotion/css";
+import { getImgUrl } from "@/utils";
 
 const UserInfoWrapper = styled.div`
   display: flex;
   cursor: pointer;
-  width: 150px;
+  width: 200px;
   border-radius: 10px;
   transition: background 0.3s, width 0.3s;
   padding: 2px 5px;
@@ -109,7 +110,7 @@ const UserInfo = () => {
   const content = (
     <ContentWrapper>
       <div className="header">
-        <img src={user.avatar} width="70px" height="70px" />
+        <img src={getImgUrl(user.avatar)} width="70px" height="70px" />
         <div className="info">
           <div className="name">{user.name}</div>
           <div className="role">{roleMap[user.role]}</div>
@@ -133,7 +134,7 @@ const UserInfo = () => {
       overlayClassName={popoverCss}
     >
       <UserInfoWrapper>
-        <img src={user.avatar} width="45px" height="45px" />
+        <img src={getImgUrl(user.avatar)} width="45px" height="45px" />
         <div className="info">
           <div className="name">{user.name}</div>
           <div className="role">{roleMap[user.role]}</div>

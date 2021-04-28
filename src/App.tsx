@@ -14,6 +14,7 @@ const App = () => {
 
   useEffect(() => {
     initData();
+    // eslint-disable-next-line
   }, []);
 
   return <Router />;

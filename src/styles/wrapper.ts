@@ -62,7 +62,8 @@ interface IFlexWrapper {
 }
 export const FlexWrapper = styled(ContainerWrapper)`
   display: flex;
-  flex-direction: ${(props: IFlexWrapper) => (props.flexColumn ? "column" : "row")};
+  flex-direction: ${(props: IFlexWrapper) =>
+    props.flexColumn ? "column" : "row"};
   justify-content: ${(props: IFlexWrapper) => {
     if (props.flexCenter || props.justifyContentCenter) {
       return "center";
@@ -77,4 +78,27 @@ export const FlexWrapper = styled(ContainerWrapper)`
       return props.justifyContent;
     }
   }};
+`;
+
+interface IBoxWrapper {
+  width?: string;
+  height?: string;
+  notCenter?: boolean;
+}
+
+export const BoxWrapper = styled.div`
+  margin-top: 20px;
+  margin: 30px 0;
+  ${(props) =>
+    !props.notCenter
+      ? css`
+          margin: 30px auto;
+        `
+      : ""}
+  width: ${(props: IBoxWrapper) => (props.width ? props.width : "800px")};
+  height: ${(props: IBoxWrapper) => props.height};
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 1px 3px 0 rgb(18 18 18 / 10%);
+  border-radius: 10px;
 `;
