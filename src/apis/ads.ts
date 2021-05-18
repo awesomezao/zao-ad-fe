@@ -34,7 +34,7 @@ export interface IAds {
   ads_name: string; //  投放名称
   media_id: string; // 媒体id
   code_id: string; // 广告位id
-  code_type: TCodeType; // 投放的代码位类型
+  code_type: TCodeType; // 投放的广告位类型
   directional: TDirectional; // 广告定向
   ads_date: TAdsDate; // 投放日期
   ads_time: TAdsTime; // 投放时间
@@ -47,7 +47,7 @@ export interface ICreateAdsReq {
   code_id: string; // 广告位id
   ads_name: string; //  投放名称
   media_id: string; // 媒体id
-  code_type: TCodeType; // 投放的代码位类型
+  code_type: TCodeType; // 投放的广告位类型
   directional: TDirectional; // 广告定向
   ads_date: TAdsDate; // 投放日期
   ads_time: TAdsTime; // 投放时间

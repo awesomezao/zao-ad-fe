@@ -35,7 +35,7 @@ export const getTime = (tag: 'yesterday' | 'week' | 'month') => {
       };
     case 'month':
       return {
-        start: (moment as any)().startOf('month').format('YYYY-MM-DD'),
+        start: (moment as any)().subtract(29, 'days').format('YYYY-MM-DD'),
         end: now,
       };
     default:

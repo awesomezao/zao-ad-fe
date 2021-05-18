@@ -64,7 +64,7 @@ const AdsHome = () => {
       // render: (text: any) => text,
     },
     {
-      title: "代码位类型",
+      title: "广告位类型",
       dataIndex: "code_type",
       key: "code_type",
       render: (text: any) => (
@@ -74,13 +74,13 @@ const AdsHome = () => {
       ),
     },
     {
-      title: "代码位ID",
+      title: "广告位ID",
       dataIndex: "code_id",
       key: "code_id",
       // render: (text: any) => text,
     },
     {
-      title: "代码位名称",
+      title: "广告位名称",
       key: "code_name",
       dataIndex: "code_name",
       // render: async (text: any) => {

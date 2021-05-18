@@ -65,7 +65,7 @@ const PageHeader = () => {
         {user.role === "media" && (
           <SubMenu key="/flow" title="流量">
             <Item key="/flow/apps">应用</Item>
-            <Item key="/flow/codes">代码位</Item>
+            <Item key="/flow/codes">广告位</Item>
           </SubMenu>
         )}
 

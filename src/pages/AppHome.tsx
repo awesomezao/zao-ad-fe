@@ -88,9 +88,9 @@ const AppHome = () => {
       key: "action",
       render: (text: any, record: any) => (
         <Space>
-          <a>查看代码位</a>
+          <a>查看广告位</a>
           <a>编辑</a>
-          <a>创建代码位</a>
+          <a>创建广告位</a>
           <a>数据</a>
         </Space>
       ),
@@ -113,7 +113,7 @@ const AppHome = () => {
       >
         <SubMenu key="/flow" title="流量">
           <Item key="/flow/apps">应用</Item>
-          <Item key="/flow/codes">代码位</Item>
+          <Item key="/flow/codes">广告位</Item>
         </SubMenu>
       </Menu>
       <BoxWrapper

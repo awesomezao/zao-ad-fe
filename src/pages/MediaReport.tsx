@@ -228,19 +228,19 @@ const MediaReport = () => {
       render: (text: any) => getNameFromIndustryCode(text),
     },
     {
-      title: "代码位ID",
+      title: "广告位ID",
       dataIndex: "code_id",
       key: "code_id",
       // render: (text: any) => text,
     },
     {
-      title: "代码位名称",
+      title: "广告位名称",
       dataIndex: "code_name",
       key: "code_name",
       // render: (text: any) => text,
     },
     {
-      title: "代码位类型",
+      title: "广告位类型",
       dataIndex: "code_type",
       key: "code_type",
       render: (text: any) => (CODE_TYPE as any)[text],

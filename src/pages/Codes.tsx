@@ -147,7 +147,7 @@ const Codes = () => {
     <CodesWrapper>
       <BoxWrapper width="1000px">
         <Steps current={Number(urlState.step)}>
-          <Step title="选择代码位类型" />
+          <Step title="选择广告位类型" />
           <Step title={type === "create" ? "创建配置" : "更新配置"} />
         </Steps>
       </BoxWrapper>
@@ -173,7 +173,7 @@ const Codes = () => {
                   <Form.Item
                     label="选择所属应用"
                     name="app_id"
-                    rules={[{ required: true, message: "请填写代码位名称" }]}
+                    rules={[{ required: true, message: "请填写广告位名称" }]}
                   >
                     <Select placeholder="请选择所属应用">
                       {appList.map((i) => (
@@ -198,10 +198,10 @@ const Codes = () => {
                 </Form.Item>
                 <Form.Item
                   name="code_name"
-                  label="代码位名称"
-                  rules={[{ required: true, message: "请填写代码位名称" }]}
+                  label="广告位名称"
+                  rules={[{ required: true, message: "请填写广告位名称" }]}
                 >
-                  <Input placeholder="请填写代码位名称" />
+                  <Input placeholder="请填写广告位名称" />
                 </Form.Item>
               </Form>
             </div>
