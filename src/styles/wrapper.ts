@@ -83,19 +83,13 @@ export const FlexWrapper = styled(ContainerWrapper)`
 interface IBoxWrapper {
   width?: string;
   height?: string;
+  margin?: string;
   notCenter?: boolean;
 }
 
 export const BoxWrapper = styled.div`
-  margin-top: 20px;
-  margin: 30px 0;
-  ${(props) =>
-    !props.notCenter
-      ? css`
-          margin: 30px auto;
-        `
-      : ""}
-  width: ${(props: IBoxWrapper) => (props.width ? props.width : "800px")};
+  margin: ${(props: IBoxWrapper) => (props.margin ? props.margin : "30px 0")};
+  width: ${(props: IBoxWrapper) => (props.width ? props.width : "100%")};
   height: ${(props: IBoxWrapper) => props.height};
   background-color: #fff;
   padding: 20px;

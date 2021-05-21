@@ -24,13 +24,16 @@ const Router = () => {
               "/report/advertiser",
               "/ads",
               "/ads/:type",
-              "/buried/manage",
-              "/buried/manage/:type",
-              "/buried/report",
-              "/flow/apps",
-              "/flow/codes",
-              "/flow/apps/:type",
-              "/flow/codes/:type",
+              "/event/manage",
+              "/event/manage/create",
+              "/event/manage/update",
+              "/event/report",
+              "/flow/app",
+              "/flow/app/create",
+              "/flow/app/update",
+              "/flow/code",
+              "/flow/code/create",
+              "/flow/code/update",
             ]}
             render={() => {
               return (
@@ -50,7 +53,7 @@ const Router = () => {
                   /> */}
                   <Route
                     path="/access"
-                    component={lazy(() => import("@/pages/Access"))}
+                    component={lazy(() => import("@/pages/Media/Access"))}
                   />
                   <Route
                     path="/finance"
@@ -58,7 +61,7 @@ const Router = () => {
                   />
                   <Route
                     path="/report/media"
-                    component={lazy(() => import("@/pages/MediaReport"))}
+                    component={lazy(() => import("@/pages/Media/Report"))}
                   />
                   <Route
                     path="/report/advertiser"
@@ -74,36 +77,52 @@ const Router = () => {
                     component={lazy(() => import("@/pages/Ads"))}
                   />
                   <Route
-                    path="/buried/manage"
+                    path="/event/manage"
                     exact
-                    component={lazy(() => import("@/pages/BuriedHome"))}
+                    component={lazy(() => import("@/pages/Media/CustomEvent/Home"))}
                   />
                   <Route
-                    path="/buried/report"
+                    path="/event/manage/create"
+                    component={lazy(() => import("@/pages/Media/CustomEvent/Create"))}
+                  />
+                  <Route
+                    path="/event/manage/update"
+                    component={lazy(() => import("@/pages/Media/CustomEvent/Update"))}
+                  />
+                  {/* <Route
+                    path="/event/report"
                     exact
-                    component={lazy(() => import("@/pages/BuriedReportHome"))}
+                    component={lazy(() => import("@/pages/eventReportHome"))}
                   />
                   <Route
-                    path="/buried/manage/:type"
-                    component={lazy(() => import("@/pages/Buried"))}
+                    path="/event/manage/:type"
+                    component={lazy(() => import("@/pages/event"))}
+                  /> */}
+                  <Route
+                    exact
+                    path="/flow/app"
+                    component={lazy(() => import("@/pages/Media/App/Home"))}
+                  />
+                  <Route
+                    path="/flow/app/create"
+                    component={lazy(() => import("@/pages/Media/App/Create"))}
+                  />
+                  <Route
+                    path="/flow/app/update"
+                    component={lazy(() => import("@/pages/Media/App/Update"))}
                   />
                   <Route
                     exact
-                    path="/flow/apps"
-                    component={lazy(() => import("@/pages/AppHome"))}
+                    path="/flow/code"
+                    component={lazy(() => import("@/pages/Media/Code/Home"))}
                   />
                   <Route
-                    exact
-                    path="/flow/codes"
-                    component={lazy(() => import("@/pages/CodeHome"))}
+                    path="/flow/code/create"
+                    component={lazy(() => import("@/pages/Media/Code/Create"))}
                   />
                   <Route
-                    path="/flow/apps/:type"
-                    component={lazy(() => import("@/pages/Apps"))}
-                  />
-                  <Route
-                    path="/flow/codes/:type"
-                    component={lazy(() => import("@/pages/Codes"))}
+                    path="/flow/code/update"
+                    component={lazy(() => import("@/pages/Media/Code/Update"))}
                   />
                 </NormalLayout>
               );

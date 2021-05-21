@@ -64,15 +64,15 @@ const PageHeader = () => {
         {/* media */}
         {user.role === "media" && (
           <SubMenu key="/flow" title="流量">
-            <Item key="/flow/apps">应用</Item>
-            <Item key="/flow/codes">广告位</Item>
+            <Item key="/flow/app">应用</Item>
+            <Item key="/flow/code">广告位</Item>
           </SubMenu>
         )}
 
         {user.role === "media" && (
-          <SubMenu key="/buried" title="埋点">
-            <Item key="/buried/manage">管理</Item>
-            <Item key="/buried/report">报表</Item>
+          <SubMenu key="/event" title="埋点">
+            <Item key="/event/manage">管理</Item>
+            <Item key="/event/report">报表</Item>
           </SubMenu>
         )}
         {user.role === "media" && <Item key="/access">接入</Item>}

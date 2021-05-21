@@ -31,6 +31,9 @@ export const updateCode = (req: IUpdateCodeReq): Promise<{}> =>
 
 export const getCodeList = (): Promise<ICode[]> => axios.get("/code/list");
 
+export interface IGetCodeInfoRes extends ICode {
+  app: IApp;
+}
 export const getCodeInfo = (code_id: string): Promise<ICode> =>
   axios.get("/code/info", { params: { code_id } });
 

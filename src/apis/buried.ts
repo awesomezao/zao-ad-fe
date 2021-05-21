@@ -1,3 +1,4 @@
+import { IApp } from "./app";
 import axios from "./index";
 
 export interface IBuried {
@@ -31,7 +32,10 @@ export const updateCustomBuried = (req: {
 export const getCustomBuriedList = (app_id: string): Promise<IBuried[]> =>
   axios.get("/self/list", { params: { app_id } });
 
-export const getCustomBuriedInfo = (buried_id: string): Promise<IBuried> =>
+export interface IGetCustomBuriedInfoRes extends IBuried {
+  app: IApp;
+}
+export const getCustomBuriedInfo = (buried_id: string): Promise<IGetCustomBuriedInfoRes> =>
   axios.get("/self/info", { params: { buried_id } });
 
 export interface IGetCustomBuriedReportReq {
