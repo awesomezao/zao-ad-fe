@@ -1,4 +1,4 @@
-import { Steps, Row, Col, Spin, message } from "antd";
+import { Steps, Row, Col, Spin, message, DatePicker } from "antd";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { BoxWrapper } from "@/styles/wrapper";
@@ -12,6 +12,7 @@ import useConfirm from "@/hooks/useConfirm";
 import useForm, { IFormItem } from "@/hooks/useForm";
 import PageHeader from "@/components/PageHeader";
 import { getIndustryTreeSelectData, getCodeType } from "@/utils";
+import moment from "moment";
 
 const { Step } = Steps;
 
@@ -54,9 +55,11 @@ const Create = () => {
 
   const handleSubmit = async () => {
     const res = await form.validateFields();
-    const { shield } = res;
+    const { shield, date, price } = res;
     res.shield = JSON.stringify(shield);
     res.code_type = urlState.adType;
+    res.date = JSON.stringify(date);
+    res.price = price;
     console.log(res);
     createCodeR.run(res);
   };
@@ -94,6 +97,21 @@ const Create = () => {
       requiredMessage: "请输入广告位名称",
       placeholder: "请输入广告位名称",
     },
+    {
+      name: "price",
+      type: "InputNumber",
+      label: "售价",
+      requiredMessage: "请输入广告位售价",
+      placeholder: "请输入广告位售价",
+    },
+    {
+      name: "date",
+      type: "Custom",
+      label: "选择出售时间",
+      requiredMessage: "选择出售时间",
+      placeholder: "选择出售时间",
+      customComponent: <DatePicker.RangePicker format="YYYY-MM-DD" />,
+    },
   ];
 
   return (
@@ -118,7 +136,12 @@ const Create = () => {
               <Spin spinning={createCodeR.loading || getAppListR.loading}>
                 <PageHeader title="创建广告位" />
                 <Col span={15}>
-                  <Form>{formConfig.map((i) => renderFormItem(i))}</Form>
+                  <Form>
+                    {formConfig.slice(0, 4).map((i) => renderFormItem(i))}
+                    {urlState.adType === "splash"
+                      ? formConfig.slice(4, 6).map((i) => renderFormItem(i))
+                      : null}
+                  </Form>
                 </Col>
               </Spin>
             )}

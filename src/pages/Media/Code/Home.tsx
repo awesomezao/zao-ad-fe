@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Space, Table, Row, Col } from "antd";
-import { getCodeList, ICode } from "@/apis/code";
+import { getCodeList, ICode, getFilterCodeList } from "@/apis/code";
 import { useRequest, useMount } from "ahooks";
 import { useHistory } from "react-router-dom";
 import { BoxWrapper } from "@/styles/wrapper";
@@ -9,6 +9,8 @@ import AppStatus from "@/components/AppStatus";
 import useSideMenu from "@/hooks/useSideMenu";
 import ConfigOperation from "@/components/ConfigOperation";
 import PageHeader from "@/components/PageHeader";
+import AppPicker from "@/components/AppPicker";
+import { useCurrent } from "@/hooks/useCurrentPath";
 
 const Home = () => {
   const history = useHistory();
@@ -21,10 +23,11 @@ const Home = () => {
       { value: "/flow/code", label: "广告位" },
     ],
   });
-
-  const getCodeListR = useRequest(getCodeList, {
+  const { redirect } = useCurrent();
+  const getCodeFilterListR = useRequest(getFilterCodeList, {
     manual: true,
     onSuccess: (res) => {
+      console.log(res);
       setData(
         res.map((i) => ({
           ...i,
@@ -34,9 +37,6 @@ const Home = () => {
         }))
       );
     },
-  });
-  useMount(() => {
-    getCodeListR.run();
   });
 
   const columns = [
@@ -94,7 +94,7 @@ const Home = () => {
           >
             编辑
           </a>
-          <a>数据</a>
+          <a onClick={() => redirect(`/report/media`)}>数据</a>
         </Space>
       ),
     },
@@ -106,6 +106,19 @@ const Home = () => {
       <Col span={19} offset={1}>
         <BoxWrapper>
           <PageHeader title="广告位" />
+          <Col span={10}>
+            <AppPicker
+              onRequestSuccess={(appList) => {
+                if (appList.length) {
+                  getCodeFilterListR.run(appList[0]._id);
+                }
+              }}
+              onAppChange={(app_id) => {
+                getCodeFilterListR.run(app_id);
+              }}
+            />
+          </Col>
+
           <ConfigOperation
             text="+ 新建广告位"
             extra="运行的广告位不可多于50个"
@@ -114,7 +127,7 @@ const Home = () => {
           <Table
             columns={columns}
             dataSource={data}
-            loading={getCodeListR.loading}
+            loading={getCodeFilterListR.loading}
           />
         </BoxWrapper>
       </Col>

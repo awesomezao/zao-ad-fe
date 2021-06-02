@@ -9,6 +9,7 @@ import AppStatus from "@/components/AppStatus";
 import useSideMenu from "@/hooks/useSideMenu";
 import ConfigOperation from "@/components/ConfigOperation";
 import PageHeader from "@/components/PageHeader";
+import { useCurrent } from "@/hooks/useCurrentPath";
 
 const Home = () => {
   const history = useHistory();
@@ -21,6 +22,7 @@ const Home = () => {
       { value: "/flow/code", label: "广告位" },
     ],
   });
+  const { redirect } = useCurrent();
 
   const getAppListR = useRequest(getAppList, {
     manual: true,
@@ -61,7 +63,7 @@ const Home = () => {
       key: "action",
       render: (record: any) => (
         <Space>
-          <a>查看广告位</a>
+          <a onClick={() => history.push(`/flow/code`)}>查看广告位</a>
           <a
             onClick={() =>
               history.push(`/flow/app/update?app_id=${record._id}`)
@@ -69,8 +71,8 @@ const Home = () => {
           >
             编辑
           </a>
-          <a>创建广告位</a>
-          <a>数据</a>
+          <a onClick={() => history.push(`/flow/code/create`)}>创建广告位</a>
+          <a onClick={() => redirect(`/report/media`)}>数据</a>
         </Space>
       ),
     },

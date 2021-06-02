@@ -6,6 +6,8 @@ import {
   Cascader,
   TreeSelect,
   Select,
+  Space,
+  InputNumber,
 } from "antd";
 
 export interface IRadioConfig {
@@ -34,22 +36,38 @@ export interface ITreeSelectConfig {
 export interface IFormItem<T> {
   name?: string;
   label: string;
-  type: "Input" | "Radio" | "Cascader" | "TreeSelect" | "Select" | "Custom";
+  type:
+    | "Input"
+    | "InputNumber"
+    | "Radio"
+    | "Cascader"
+    | "TreeSelect"
+    | "Select"
+    | "Custom";
   onChange?: (e: any) => void;
   config?: T;
   disabled?: boolean;
+  readOnly?: boolean;
   placeholder?: string;
   requiredMessage?: string;
   extra?: string;
   customComponent?: React.ReactNode;
+  fieldProps?: any;
+  itemProps?: any;
+  fieldAfter?: React.ReactNode;
 }
 
 interface Props {}
 
+const formLayout = {
+  // labelCol: { span: 3 },
+  // wrapperCol: { span: 19 },
+};
+
 const useForm = (layout: "horizontal" | "vertical" | "inline" = "vertical") => {
   const [form] = AntdForm.useForm();
   const Form: React.FC = ({ children }) => (
-    <AntdForm form={form} layout={layout}>
+    <AntdForm {...formLayout} form={form} layout={layout}>
       {children}
     </AntdForm>
   );
@@ -64,7 +82,11 @@ const useForm = (layout: "horizontal" | "vertical" | "inline" = "vertical") => {
       placeholder,
       config,
       disabled,
+      readOnly,
       customComponent,
+      fieldProps = {},
+      itemProps = {},
+      fieldAfter,
       onChange = () => {},
     } = props;
     let formItemField = null;
@@ -75,9 +97,22 @@ const useForm = (layout: "horizontal" | "vertical" | "inline" = "vertical") => {
     if (type === "Input") {
       formItemField = (
         <Input
+          readOnly={readOnly}
           placeholder={placeholder}
           onChange={onChange}
           disabled={disabled}
+          {...fieldProps}
+        />
+      );
+    }
+    if (type === "InputNumber") {
+      formItemField = (
+        <InputNumber
+          readOnly={readOnly}
+          placeholder={placeholder}
+          onChange={onChange}
+          disabled={disabled}
+          {...fieldProps}
         />
       );
     }
@@ -88,6 +123,7 @@ const useForm = (layout: "horizontal" | "vertical" | "inline" = "vertical") => {
           value={data[0].value}
           defaultValue={data[0].value}
           onChange={onChange}
+          {...fieldProps}
         >
           {data.map((i: any) => (
             <Radio.Button key={i.value} value={i.value} disabled={i.disabled}>
@@ -100,7 +136,7 @@ const useForm = (layout: "horizontal" | "vertical" | "inline" = "vertical") => {
     if (type === "Select") {
       const { data = [] } = config as any;
       formItemField = (
-        <Select onChange={onChange} placeholder={placeholder}>
+        <Select onChange={onChange} placeholder={placeholder} {...fieldProps}>
           {data.map((i: any) => (
             <Select.Option key={i.value} value={i.value}>
               {i.label}
@@ -110,13 +146,15 @@ const useForm = (layout: "horizontal" | "vertical" | "inline" = "vertical") => {
       );
     }
     if (type === "Cascader") {
-      const { data } = config as any;
+      const { data, filter } = config as any;
       formItemField = (
         <Cascader
           options={data}
           placeholder={placeholder}
           allowClear
           onChange={onChange}
+          showSearch={{ filter }}
+          {...fieldProps}
         />
       );
     }
@@ -128,28 +166,49 @@ const useForm = (layout: "horizontal" | "vertical" | "inline" = "vertical") => {
           placeholder={placeholder}
           allowClear
           treeCheckable
+          {...fieldProps}
         />
       );
     }
     if (type === "Custom") {
       formItemField = customComponent;
     }
-    return (
-      <AntdForm.Item
-        key={`${name}-${label}`}
-        name={name}
-        label={label}
-        rules={rules}
-        extra={extra}
-      >
-        {formItemField}
-      </AntdForm.Item>
-    );
+    if (fieldAfter) {
+      return (
+        <AntdForm.Item key={`${name}-${label}`} label={label}>
+          <Space>
+            <AntdForm.Item
+              name={name}
+              rules={rules}
+              extra={extra}
+              {...itemProps}
+            >
+              {formItemField}
+            </AntdForm.Item>
+            {fieldAfter}
+          </Space>
+        </AntdForm.Item>
+      );
+    } else {
+      return (
+        <AntdForm.Item
+          key={`${name}-${label}`}
+          name={name}
+          label={label}
+          rules={rules}
+          extra={extra}
+          {...itemProps}
+        >
+          {formItemField}
+        </AntdForm.Item>
+      );
+    }
   }
 
   return {
     form,
     Form,
+    Item: AntdForm.Item,
     renderFormItem,
   };
 };

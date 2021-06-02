@@ -35,12 +35,13 @@ export const getCustomBuriedList = (app_id: string): Promise<IBuried[]> =>
 export interface IGetCustomBuriedInfoRes extends IBuried {
   app: IApp;
 }
-export const getCustomBuriedInfo = (buried_id: string): Promise<IGetCustomBuriedInfoRes> =>
+export const getCustomBuriedInfo = (
+  buried_id: string
+): Promise<IGetCustomBuriedInfoRes> =>
   axios.get("/self/info", { params: { buried_id } });
 
 export interface IGetCustomBuriedReportReq {
-  app_id: string;
-  event: string;
+  event_id: string;
   start: string;
   end: string;
 }
@@ -58,11 +59,22 @@ export const getCustomBuriedReport = (
     params: req,
   });
 
+export interface IGetCustomTopBuriedRes {
+  _id: string;
+  value: number;
+  event_name: string;
+}
 export const getCustomTopBuried = (req: {
   app_id: string;
   type: string;
-}): Promise<{ _id: string; value: number }> =>
+}): Promise<IGetCustomTopBuriedRes[]> =>
   axios.get("/self/top", { params: req });
 
 export const getCustomBuriedName = (app_id: string): Promise<any> =>
   axios.get("/self/name", { params: { app_id } });
+
+export interface IGetFilterBuriedList extends IApp {
+  events: IBuried[];
+}
+export const getFilterBuriedList = (): Promise<IGetFilterBuriedList[]> =>
+  axios.get("/self/filter_list");

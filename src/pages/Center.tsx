@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Button, Form, Input, message, Popconfirm } from "antd";
+import { Button, Form, Input, message, Popconfirm, Row, Col } from "antd";
 import Avatar from "@/components/Avatar";
 import { userState } from "@/globalState/user";
 import { useState } from "react";
@@ -10,6 +10,7 @@ import { getImgUrl } from "@/utils";
 import { BoxWrapper } from "@/styles/wrapper";
 import FooterBtnGroup from "@/components/FooterBtnGroup";
 import { useUser } from "@/hooks/useUser";
+import PageHeader from "@/components/PageHeader";
 
 const { Item } = Form;
 
@@ -38,35 +39,45 @@ const Center = () => {
     run(req);
   };
   return (
-    <div>
-      <BoxWrapper>
-        <h2>个人中心</h2>
-        <div>
-          <Avatar
-            bind={setAvatar}
-            initialData={getImgUrl(user.avatar)}
-            allowEdit
-            showEdit
-          />
-          <Form form={form} layout="vertical" initialValues={initialValues}>
-            <Item label="账户" name="username">
-              <Input disabled />
-            </Item>
-            <Item label="角色" name="role">
-              <Input disabled />
-            </Item>
-            <Item
-              label="用户名"
-              name="name"
-              rules={[{ required: true, message: "请填写用户名" }]}
-            >
-              <Input placeholder="请填写用户名" />
-            </Item>
-          </Form>
-        </div>
-      </BoxWrapper>
-      <FooterBtnGroup onConfirm={handleSubmit} loading={loading} />
-    </div>
+    <Row justify="center">
+      <Col span={18}>
+        <BoxWrapper>
+          <PageHeader title="个人中心" />
+          <div>
+            <Avatar
+              bind={setAvatar}
+              initialData={getImgUrl(user.avatar)}
+              allowEdit
+              showEdit
+            />
+            <Row justify="center" style={{ marginTop: "30px" }}>
+              <Col span={15}>
+                <Form
+                  form={form}
+                  layout="vertical"
+                  initialValues={initialValues}
+                >
+                  <Item label="账户" name="username">
+                    <Input disabled />
+                  </Item>
+                  <Item label="角色" name="role">
+                    <Input disabled />
+                  </Item>
+                  <Item
+                    label="用户名"
+                    name="name"
+                    rules={[{ required: true, message: "请填写用户名" }]}
+                  >
+                    <Input placeholder="请填写用户名" />
+                  </Item>
+                </Form>
+              </Col>
+            </Row>
+          </div>
+        </BoxWrapper>
+        <FooterBtnGroup onConfirm={handleSubmit} loading={loading} />
+      </Col>
+    </Row>
   );
 };
 

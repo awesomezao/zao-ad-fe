@@ -4,27 +4,42 @@ import { useHistory } from "react-router-dom";
 import { BoxWrapper } from "@/styles/wrapper";
 import { useMount, useRequest } from "ahooks";
 import { updateCode, getCodeInfo } from "@/apis/code";
-import FooterBtnGroup from "@/components/FooterBtnGroup";
+import FooterBtnGroup from "@/components/ReviewFooterBtnGroup";
 import useConfirm from "@/hooks/useConfirm";
 import useForm, { IFormItem } from "@/hooks/useForm";
 import useUrlSearchParams from "@/hooks/useUrlSearchParams";
 import PageHeader from "@/components/PageHeader";
 import { getIndustryTreeSelectData, getCodeType } from "@/utils";
 import moment from "moment";
+import { useCurrent } from "@/hooks/useCurrentPath";
+import { reviewCode } from "@/apis/admin";
 
 const { Step } = Steps;
 
-const Update = () => {
+const CodeInfo = () => {
   const history = useHistory();
   const { form, Form, renderFormItem } = useForm();
   const [isSplash, setIsSplash] = useState(false);
+  const { redirect } = useCurrent();
   const { showConfirm } = useConfirm({
-    title: "修改成功",
-    content: "你可以选择返回主页,或者继续修改配置",
-    okText: "继续修改",
-    onCancel: () => history.push("/flow/code"),
+    title: "审核",
+    content: "确定审核意见吗",
+    okText: "确定",
+    cancelText: "取消",
+    onOk: (props) => {
+      const { code_id, status } = props;
+      reviewR.run(code_id, status);
+    },
   });
   const code_id = useUrlSearchParams("code_id");
+
+  const reviewR = useRequest(reviewCode, {
+    manual: true,
+    onSuccess: (res) => {
+      message.success("审核成功");
+      redirect("/admin/code");
+    },
+  });
 
   const getCodeInfoR = useRequest(getCodeInfo, {
     manual: true,
@@ -48,30 +63,11 @@ const Update = () => {
     },
   });
 
-  const updateCodeR = useRequest(updateCode, {
-    manual: true,
-    onSuccess: (res) => {
-      message.success("更新成功");
-      code_id && getCodeInfoR.run(code_id);
-      showConfirm();
-    },
-  });
-
   useMount(() => {
     if (code_id) {
       getCodeInfoR.run(code_id);
     }
   });
-
-  const handleSubmit = async () => {
-    const res = await form.validateFields();
-    const { shield } = res;
-    res.shield = JSON.stringify(shield);
-    res._id = code_id;
-    delete res.app_id;
-    console.log(res);
-    updateCodeR.run(res);
-  };
 
   const formConfig: IFormItem<any>[] = [
     {
@@ -123,20 +119,12 @@ const Update = () => {
   return (
     <>
       <Row justify="center">
-        <Col span={16}>
-          <BoxWrapper margin="30px 0 0 0">
-            <Steps current={1}>
-              <Step title="选择广告位类型" />
-              <Step title={"修改配置"} />
-            </Steps>
-          </BoxWrapper>
-        </Col>
       </Row>
       <Row justify="center">
         <Col span={16}>
           <BoxWrapper>
-            <Spin spinning={updateCodeR.loading || getCodeInfoR.loading}>
-              <PageHeader title="修改广告位" />
+            <Spin spinning={getCodeInfoR.loading}>
+              <PageHeader title="广告位信息" showBack />
               <Col span={15}>
                 <Form>
                   {formConfig.slice(0, 4).map((i) => renderFormItem(i))}
@@ -152,9 +140,14 @@ const Update = () => {
       <Row justify="center">
         <Col span={16}>
           <FooterBtnGroup
-            onConfirm={handleSubmit}
-            onCancel={() => history.push("/flow/code")}
-            loading={updateCodeR.loading || getCodeInfoR.loading}
+            onPass={() => {
+              showConfirm({ code_id, status: "running" });
+            }}
+            onReject={() => {
+              showConfirm({ code_id, status: "no_pass" });
+            }}
+            onCancel={() => history.push("/admin/code")}
+            loading={getCodeInfoR.loading || reviewR.loading}
           />
         </Col>
       </Row>
@@ -162,4 +155,4 @@ const Update = () => {
   );
 };
 
-export default Update;
+export default CodeInfo;

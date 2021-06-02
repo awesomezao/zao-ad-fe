@@ -1,11 +1,13 @@
 import { lazy, Suspense } from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import RenderRoutes, { IRoute } from "@/utils/RenderRoutes";
 import LoadingPage from "@/components/LoadingPage";
 import EmptyLayout from "@/layout/EmptyLayout";
 import NormalLayout from "@/layout/NormalLayout";
+import { useUser } from "@/hooks/useUser";
 
 const Router = () => {
+  const { user } = useUser();
   return (
     <BrowserRouter>
       {/* <RenderRoutes routes={routes} isLogin />
@@ -16,6 +18,15 @@ const Router = () => {
             exact
             path={[
               "/",
+              "/admin",
+              "/admin/app",
+              "/admin/code",
+              "/admin/ads",
+              "/admin/app/info",
+              "/admin/code/info",
+              "/admin/ads/info",
+              "/admin/recharge",
+              "/admin/withdraw",
               "/account",
               "/summary",
               "/access",
@@ -23,7 +34,8 @@ const Router = () => {
               "/report/media",
               "/report/advertiser",
               "/ads",
-              "/ads/:type",
+              "/ads/create",
+              "/ads/update",
               "/event/manage",
               "/event/manage/create",
               "/event/manage/update",
@@ -44,16 +56,33 @@ const Router = () => {
                     component={lazy(() => import("@/pages/Summary"))}
                   />
                   <Route
-                    path="/account"
-                    component={lazy(() => import("@/pages/Center"))}
+                    exact
+                    path={[
+                      "/admin",
+                      "/admin/app",
+                      "/admin/code",
+                      "/admin/ads",
+                      "/admin/recharge",
+                      "/admin/withdraw",
+                    ]}
+                    component={lazy(() => import("@/pages/Admin/Review"))}
                   />
-                  {/* <Route
-                    path="/summary"
-                    component={lazy(() => import("@/pages/Summary"))}
-                  /> */}
+                  <Route
+                    exact
+                    path={[
+                      "/admin/app/info",
+                      "/admin/code/info",
+                      "/admin/ads/info",
+                    ]}
+                    component={lazy(() => import("@/pages/Admin/Review/Info"))}
+                  />
                   <Route
                     path="/access"
                     component={lazy(() => import("@/pages/Media/Access"))}
+                  />
+                  <Route
+                    path="/account"
+                    component={lazy(() => import("@/pages/Center"))}
                   />
                   <Route
                     path="/finance"
@@ -65,39 +94,55 @@ const Router = () => {
                   />
                   <Route
                     path="/report/advertiser"
-                    component={lazy(() => import("@/pages/AdvertiserReport"))}
+                    component={lazy(
+                      () => import("@/pages/Advertiser/AdvertiserReport")
+                    )}
                   />
                   <Route
                     path="/ads"
                     exact
-                    component={lazy(() => import("@/pages/AdsHome"))}
+                    component={lazy(
+                      () => import("@/pages/Advertiser/Ads/Home")
+                    )}
                   />
                   <Route
-                    path="/ads/:type"
-                    component={lazy(() => import("@/pages/Ads"))}
+                    path="/ads/create"
+                    component={lazy(
+                      () => import("@/pages/Advertiser/Ads/Create")
+                    )}
+                  />
+                  <Route
+                    path="/ads/update"
+                    component={lazy(
+                      () => import("@/pages/Advertiser/Ads/Update")
+                    )}
                   />
                   <Route
                     path="/event/manage"
                     exact
-                    component={lazy(() => import("@/pages/Media/CustomEvent/Home"))}
+                    component={lazy(
+                      () => import("@/pages/Media/CustomEvent/Home")
+                    )}
                   />
                   <Route
                     path="/event/manage/create"
-                    component={lazy(() => import("@/pages/Media/CustomEvent/Create"))}
+                    component={lazy(
+                      () => import("@/pages/Media/CustomEvent/Create")
+                    )}
                   />
                   <Route
                     path="/event/manage/update"
-                    component={lazy(() => import("@/pages/Media/CustomEvent/Update"))}
-                  />
-                  {/* <Route
-                    path="/event/report"
-                    exact
-                    component={lazy(() => import("@/pages/eventReportHome"))}
+                    component={lazy(
+                      () => import("@/pages/Media/CustomEvent/Update")
+                    )}
                   />
                   <Route
-                    path="/event/manage/:type"
-                    component={lazy(() => import("@/pages/event"))}
-                  /> */}
+                    path="/event/report"
+                    exact
+                    component={lazy(
+                      () => import("@/pages/Media/CustomEvent/Report")
+                    )}
+                  />
                   <Route
                     exact
                     path="/flow/app"

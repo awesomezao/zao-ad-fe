@@ -1,4 +1,4 @@
-import { INDUSTRY, CODE_TYPE } from "@/constants";
+import { INDUSTRY, CODE_TYPE, LOCATION } from "@/constants";
 import * as moment from "moment";
 
 export const getImgUrl = (url: string) => {
@@ -68,4 +68,15 @@ export const getIndustryTreeSelectData = () => {
   });
 };
 
-export const getCodeType=(code_type:string)=>(CODE_TYPE as any)[code_type]
+export const getCodeType = (code_type: string) => (CODE_TYPE as any)[code_type];
+
+export const getLocationTreeSelectOptions = () => {
+  return LOCATION.map((i) => {
+    return {
+      title: i.title,
+      value: i.title,
+      key: i.title,
+      children: i.lists.map((j) => ({ title: j, value: j, key: j })),
+    };
+  });
+};

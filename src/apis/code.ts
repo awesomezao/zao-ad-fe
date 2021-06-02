@@ -1,5 +1,6 @@
 import { IApp } from "./app";
 import axios from "./index";
+import { ISummary } from "./ads";
 
 export interface ICode {
   _id: string;
@@ -8,7 +9,9 @@ export interface ICode {
   code_type: string;
   code_status: string;
   shield: number[];
-  app: IApp;
+  app: IApp | any;
+  price: number;
+  date: number[];
 }
 
 export interface ICreateCodeReq {
@@ -31,6 +34,9 @@ export const updateCode = (req: IUpdateCodeReq): Promise<{}> =>
 
 export const getCodeList = (): Promise<ICode[]> => axios.get("/code/list");
 
+export const getFilterCodeList = (app_id: string): Promise<ICode[]> =>
+  axios.get("/code/filter_list", { params: { app_id } });
+
 export interface IGetCodeInfoRes extends ICode {
   app: IApp;
 }
@@ -41,3 +47,6 @@ export const getCodeName = (code_id: string): Promise<string> =>
   axios.get("/code/codeName", {
     params: { code_id },
   });
+
+export const getCodeSummary = (): Promise<ISummary> =>
+  axios.get("/code/summary");

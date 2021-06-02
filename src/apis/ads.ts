@@ -21,7 +21,7 @@ export type TPayMethod = "CPM" | "CPC" | "oCPM" | "oCPC";
 
 // 创意内容
 export interface ICreativeConfig {
-  img:string;
+  img: string;
   img_type: "vertical" | "horizontal";
   desc: string; // 广告描述
   brand_title: string; // 品牌标题
@@ -32,7 +32,7 @@ export interface IAds {
   _id: string;
   // user_id: string;
   ads_name: string; //  投放名称
-  media_id: string; // 媒体id
+  // media_id: string; // 媒体id
   code_id: string; // 广告位id
   code_type: TCodeType; // 投放的广告位类型
   directional: TDirectional; // 广告定向
@@ -41,6 +41,7 @@ export interface IAds {
   pay_method: TPayMethod; // 支付方式
   payments: number; // 支付数额
   creative_config: ICreativeConfig; // 创意内容
+  ads_amount: number;
 }
 
 export interface ICreateAdsReq {
@@ -75,3 +76,10 @@ export const getAdsList = (): Promise<IAds[]> => axios.get("/ads/list");
 
 export const getAdsInfo = (ads_id: string): Promise<IAds> =>
   axios.get("/ads/info", { params: { ads_id } });
+
+export interface ISummary {
+  running: number;
+  under_review: number;
+  no_pass: number;
+}
+export const getAdsSummary = (): Promise<ISummary> => axios.get("/ads/summary");

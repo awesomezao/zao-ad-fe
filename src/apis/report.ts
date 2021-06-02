@@ -75,23 +75,18 @@ export interface IGetAdsReportTableRes {
     page_size: number;
     total: number;
   };
+  ads_name: 1,
+  pay_method: 1,
+  payments: 1,
+  code_type: 1,
+  buried_event: '$buried.event',
+  buried_date: '$buried.data.date',
+  buried_date_string: '$buried.data.date_string',
+  buried_value: '$buried.data.value',
   data: {
     ads_name: string;
-    ads_directional: any;
-    ads_date: string;
-    ads_time: string;
     pay_method: string;
     payments: number;
-    ads_creative_config: any;
-    code_id: string;
-    code_type: string;
-    code_name: string;
-    media_id: string;
-    media_name: string;
-    app_id: string;
-    app_name: string;
-    app_industry: number;
-    buried_id: string;
     buried_event: string;
     buried_date: number;
     buried_date_string: string;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Menu } from "antd";
 import zaoLogoImg from "@/assets/images/zao_logo.png";
@@ -6,6 +6,8 @@ import styled from "@emotion/styled";
 import UserInfo from "./UserInfo";
 import { useRecoilState } from "recoil";
 import { userState } from "@/globalState/user";
+import { useMount } from "ahooks";
+import { useCurrent } from "@/hooks/useCurrentPath";
 
 const { Item, SubMenu } = Menu;
 
@@ -34,14 +36,19 @@ const HeaderWrapper = styled.div`
 `;
 
 const PageHeader = () => {
-  const [current, setCurrent] = useState("/summary");
   const history = useHistory();
+  const { redirect, current, setCurrent } = useCurrent();
   const [user] = useRecoilState(userState);
 
   const handleClick = (e: any) => {
     setCurrent(e.key);
     history.push(e.key);
   };
+
+  useMount(() => {
+    setCurrent(history.location.pathname);
+  });
+
   return (
     <HeaderWrapper>
       <div className="logo">
@@ -54,7 +61,15 @@ const PageHeader = () => {
         selectedKeys={[current]}
         mode="horizontal"
       >
-        <Item key="/">概览</Item>
+        {user.role !== "admin" && <Item key="/">概览</Item>}
+        {user.role === "admin" && (
+          <SubMenu key="/admin" title="审核">
+            <Item key="/admin/app">应用</Item>
+            <Item key="/admin/code">广告位</Item>
+            <Item key="/admin/ad">广告计划</Item>
+          </SubMenu>
+        )}
+
         {user.role === "advertiser" && (
           <Item key="/report/advertiser">报表</Item>
         )}

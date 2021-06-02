@@ -2,7 +2,12 @@ import { APP_STATUS } from "@/constants";
 import { Tag } from "antd";
 
 // 审核中、运行中、审核不通停止
-export type TAppStatus = "under_review" | "running" | "no_pass" | "stop";
+export type TAppStatus =
+  | "under_review"
+  | "running"
+  | "no_pass"
+  | "stop"
+  | "pass";
 
 interface Props {
   status: TAppStatus;
@@ -22,6 +27,9 @@ const AppStatus = ({ status }: Props) => {
       ) : null}
       {status === "stop" ? (
         <Tag color="default">{(APP_STATUS as any)[status]}</Tag>
+      ) : null}
+      {status === "pass" ? (
+        <Tag color="success">{(APP_STATUS as any)[status]}</Tag>
       ) : null}
     </>
   );

@@ -7,10 +7,11 @@ interface Props {
   title: string;
   prePath: string;
   data: { value: string; label: string }[];
+  height?: "100vh" | "100%";
 }
 
 const useSideMenu = (props: Props) => {
-  const { title, prePath, data } = props;
+  const { title, prePath, data, height = "100vh" } = props;
   const [current, setCurrent] = useState(prePath);
   const history = useHistory();
 
@@ -30,7 +31,10 @@ const useSideMenu = (props: Props) => {
       onClick={handleClick}
       selectedKeys={[current]}
       mode="inline"
-      style={{ width: "100%", height: "calc(100vh - 51px)" }}
+      style={{
+        width: "100%",
+        height: height === "100vh" ? "calc(100vh - 51px)" : "100%",
+      }}
       defaultOpenKeys={[prePath]}
       defaultSelectedKeys={[current]}
     >

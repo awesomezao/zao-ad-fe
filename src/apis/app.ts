@@ -1,3 +1,4 @@
+import { ISummary } from "./ads";
 import { ICode } from "./code";
 import axios from "./index";
 
@@ -36,3 +37,6 @@ export interface IAppInfo extends IApp {
 
 export const getAppInfoList = (): Promise<IAppInfo[]> =>
   axios.get("/app/infoList");
+
+export const getAppSummary = (): Promise<ISummary> =>
+  axios.get("/app/summary");

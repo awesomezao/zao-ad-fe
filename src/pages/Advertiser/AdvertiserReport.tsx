@@ -84,6 +84,7 @@ const AdvertiserReport = () => {
   const getReportTableR = useRequest(getAdsReportTable, {
     manual: true,
     onSuccess: (res) => {
+      console.log(res);
       setTableData(res.data);
       setTotal(res.pagination.total);
     },
@@ -106,7 +107,7 @@ const AdvertiserReport = () => {
       getReportChartR.run(req);
     }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initAdsId]);
 
   useMount(() => {
@@ -204,34 +205,20 @@ const AdvertiserReport = () => {
       // render: (text: any) => text,
     },
     {
-      title: "绑定应用",
-      dataIndex: "app_name",
-      key: "app_name",
-      // render: (text: any) => text,
-    },
-    {
-      title: "应用行业",
-      dataIndex: "app_industry",
-      key: "app_industry",
-      render: (text: any) => getNameFromIndustryCode(text),
-    },
-    {
-      title: "广告位ID",
-      dataIndex: "code_id",
-      key: "code_id",
-      // render: (text: any) => text,
-    },
-    {
-      title: "广告位名称",
-      dataIndex: "code_name",
-      key: "code_name",
-      // render: (text: any) => text,
-    },
-    {
       title: "广告位类型",
       dataIndex: "code_type",
       key: "code_type",
       render: (text: any) => (CODE_TYPE as any)[text],
+    },
+    {
+      title: "支付方式",
+      dataIndex: "pay_method",
+      key: "pay_method",
+    },
+    {
+      title: "投放数量",
+      dataIndex: "ads_amount",
+      key: "ads_amount",
     },
     {
       title: "事件名称",

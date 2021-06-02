@@ -15,21 +15,21 @@ const fs = require("fs");
 const appPath = (target) => path.resolve(__dirname, target);
 
 // 配置devServer,代理
-const devServerConfig = () => config => {
+const devServerConfig = () => (config) => {
   return {
     ...config,
     compress: true,
     proxy: {
-      '/apis/**': {
-        target: 'http://localhost:8080',
+      "/apis/**": {
+        target: "http://localhost:8080",
         changeOrigin: true,
         pathRewrite: {
-          '^/apis': '/'
-        }
-      }
-    }
-  }
-}
+          "^/apis": "/",
+        },
+      },
+    },
+  };
+};
 
 module.exports = {
   webpack: override(
@@ -49,10 +49,15 @@ module.exports = {
     useBabelRc(),
     // eslint-disable-next-line react-hooks/rules-of-hooks
     // useEslintRc(),
+    // (config) => {
+    //   config.module.rules.push({
+    //     test: /\.md$/,
+    //     use: "raw-loader",
+    //   });
+    //   return config;
+    // }
   ),
-  devServer: overrideDevServer(
-    devServerConfig()
-  ),
+  devServer: overrideDevServer(devServerConfig()),
   paths: (paths, env) => {
     return paths;
   },

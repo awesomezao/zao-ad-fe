@@ -1,28 +1,17 @@
 import { useState, useEffect } from "react";
-import {
-  Button,
-  Menu,
-  Space,
-  Table,
-  Tag,
-  Form,
-  Select,
-  Row,
-  Col,
-  Spin,
-} from "antd";
+import { Space, Table, Form, Select, Row, Col } from "antd";
 import { getCustomBuriedList, IBuried } from "@/apis/buried";
 import { useRequest } from "ahooks";
 import { useHistory } from "react-router-dom";
 import { BoxWrapper } from "@/styles/wrapper";
-import { getAppList, IApp, getAppInfo } from "@/apis/app";
 import useSideMenu from "@/hooks/useSideMenu";
 import ConfigOperation from "@/components/ConfigOperation";
 import PageHeader from "@/components/PageHeader";
+import AppPicker from "@/components/AppPicker";
+import { useCurrent } from "@/hooks/useCurrentPath";
 
 const Home = () => {
   const [data, setData] = useState<IBuried[]>([]);
-  const [appList, setAppList] = useState<IApp[]>([]);
   const history = useHistory();
   const { sideMenu } = useSideMenu({
     title: "埋点",
@@ -32,36 +21,13 @@ const Home = () => {
       { value: "/event/report", label: "报表" },
     ],
   });
-  const [form] = Form.useForm();
-
+  const { redirect } = useCurrent();
   const getBuriedListR = useRequest(getCustomBuriedList, {
     manual: true,
     onSuccess: (res) => {
       setData(res.map((i) => ({ ...i, key: i._id })));
     },
   });
-
-  const getAppListR = useRequest(getAppList, {
-    manual: true,
-    onSuccess: (res) => {
-      if (res.length > 0) {
-        form.setFieldsValue({
-          app_id: res[0]._id,
-        });
-        getBuriedListR.run(res[0]._id);
-        setAppList(res);
-      }
-    },
-  });
-
-  const handleAppChange = (e: any) => {
-    getBuriedListR.run(e);
-  };
-
-  useEffect(() => {
-    getAppListR.run();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const columns = [
     {
@@ -96,7 +62,7 @@ const Home = () => {
           >
             编辑
           </a>
-          <a>数据</a>
+          <a onClick={() => redirect(`/event/report`)}>数据</a>
         </Space>
       ),
     },
@@ -110,17 +76,14 @@ const Home = () => {
           <PageHeader title="埋点" />
           <Row>
             <Col span={8}>
-              <Form form={form}>
-                <Form.Item label="选择应用" name="app_id">
-                  <Select onChange={handleAppChange}>
-                    {appList.map((i) => (
-                      <Select.Option key={i._id} value={i._id}>
-                        {i.app_name}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-              </Form>
+              <AppPicker
+                onRequestSuccess={(appList) => {
+                  getBuriedListR.run(appList[0]._id);
+                }}
+                onAppChange={(app_id) => {
+                  getBuriedListR.run(app_id);
+                }}
+              />
             </Col>
           </Row>
 
@@ -132,7 +95,7 @@ const Home = () => {
           <Table
             columns={columns}
             dataSource={data}
-            loading={getAppListR.loading || getBuriedListR.loading}
+            loading={getBuriedListR.loading}
           />
         </BoxWrapper>
       </Col>

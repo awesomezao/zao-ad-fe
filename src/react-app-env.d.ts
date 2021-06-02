@@ -1,6 +1,8 @@
 /// <reference types="react-scripts" />
 /// <reference types="@emotion/react/types/css-prop" />
 
+declare module "*.md";
+
 export interface FormRenderSchema<T = any> {
   type: "object";
   displayType?: "row" | "column";
@@ -25,4 +27,9 @@ export interface IUser {
   role: string;
   name: string;
   avatar: string;
+}
+
+declare module '*.md' {
+  const content: string;
+  export = content;
 }
