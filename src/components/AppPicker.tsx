@@ -6,11 +6,15 @@ import { Form, Select } from "antd";
 interface Props {
   onRequestSuccess?: (res: IApp[]) => void;
   onAppChange?: (app_id: string) => void;
+  refreshList?: boolean;
 }
 
 const AppPicker = (props: Props) => {
-  const { onRequestSuccess = (res) => {}, onAppChange = (app_id) => {} } =
-    props;
+  const {
+    onRequestSuccess = (res) => {},
+    onAppChange = (app_id) => {},
+    refreshList = false,
+  } = props;
   const [appList, setAppList] = useState<IApp[]>([]);
   const [form] = Form.useForm();
 

@@ -115,7 +115,6 @@ const AdsInfo = () => {
       }
       setCodeType(res.code_type);
       setImgType(res.creative_config.img_type);
-      console.log(JSON.stringify(res.directional.age));
       form.setFieldsValue({
         ads_name: res.ads_name,
         code_type: res.code_type,
@@ -429,6 +428,7 @@ const AdsInfo = () => {
       <Row justify="center">
         <Col span={16}>
           <FooterBtnGroup
+            margin="30px 0"
             onPass={() => {
               showConfirm({ ads_id, status: "running" });
             }}

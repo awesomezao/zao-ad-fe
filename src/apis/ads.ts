@@ -83,3 +83,11 @@ export interface ISummary {
   no_pass: number;
 }
 export const getAdsSummary = (): Promise<ISummary> => axios.get("/ads/summary");
+
+export const changeAdsStatus = (
+  ads_id: string,
+  status: "stop" | "under_review"
+): Promise<{}> => axios.get("/ads/status", { params: { ads_id, status } });
+
+export const deleteAds = (ads_id: string): Promise<{}> =>
+  axios.get("/ads/delete", { params: { ads_id } });

@@ -141,7 +141,7 @@ const Create = () => {
     _res.ads_amount = res.ads_amount ? Number(res.ads_amount) : 0;
 
     _res.creative_config = JSON.stringify({
-      img_type: res.img_type,
+      img_type: imgType,
       img: imgUrl,
       desc: res.desc,
       brand_title: res.brand_title,
@@ -467,6 +467,7 @@ const Create = () => {
       <Row justify="center">
         <Col span={16}>
           <FooterBtnGroup
+            margin="30px 0"
             onConfirm={handleSubmit}
             onCancel={() => history.push("/ads")}
             loading={createAdsR.loading}

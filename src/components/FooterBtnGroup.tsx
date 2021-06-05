@@ -5,12 +5,19 @@ import { useHistory } from "react-router-dom";
 interface Props {
   onCancel?: () => void;
   onConfirm: () => void;
+  margin?: string;
   loading?: boolean;
   width?: string;
 }
 
 const FooterBtnGroup = (props: Props) => {
-  const { onCancel, onConfirm = () => {}, loading = false, width } = props;
+  const {
+    onCancel,
+    onConfirm = () => {},
+    loading = false,
+    width,
+    margin = "",
+  } = props;
   const history = useHistory();
   const handleCancel = () => {
     if (onCancel) {
@@ -23,7 +30,7 @@ const FooterBtnGroup = (props: Props) => {
   return (
     <BoxWrapper
       width={width}
-      margin="0"
+      margin={margin}
       css={{ display: "flex", justifyContent: "flex-end" }}
     >
       <Space>

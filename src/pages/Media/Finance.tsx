@@ -10,6 +10,8 @@ import {
   Form,
   InputNumber,
   message,
+  Statistic,
+  Space,
 } from "antd";
 import { useUser } from "@/hooks/useUser";
 import PageHeader from "@/components/PageHeader";
@@ -22,8 +24,10 @@ import {
 } from "@/apis/user";
 import { useMount, useRequest } from "ahooks";
 import AppStatus from "@/components/AppStatus";
+import { useCurrent } from "@/hooks/useCurrentPath";
 
 const Finance = () => {
+  const { user } = useUser();
   const [data, setData] = useState<IWithdraw[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [form] = Form.useForm();
@@ -34,6 +38,7 @@ const Finance = () => {
     today_earnings: 0,
     today_date_string: "",
   });
+  const { redirect } = useCurrent();
 
   const getWithdrawListR = useRequest(getWithdrawList, {
     manual: true,
@@ -65,15 +70,9 @@ const Finance = () => {
 
   useMount(() => {
     getWithdrawListR.run();
+    getFinanceInfoR.run();
     // getFinanceInfo.run();
   });
-
-  useEffect(() => {
-    if (showModal) {
-      getFinanceInfoR.run();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showModal]);
 
   const handleSubmit = async () => {
     const res = await form.validateFields();
@@ -109,6 +108,28 @@ const Finance = () => {
   return (
     <Row justify="center">
       <Col span={18}>
+        <BoxWrapper margin="30px 0 0 0">
+          <h2 style={{ fontSize: 20, marginBottom: 20 }}>hi, {user.name}</h2>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <Statistic
+              title={
+                <Space>
+                  <span>收益（元）</span>
+                  {/* <a onClick={() => redirect("/finance")}>去提现</a> */}
+                </Space>
+              }
+              precision={2}
+              value={mediaFinance.earnings}
+            />
+            <Statistic
+              title="今日收益（元）"
+              precision={4}
+              value={mediaFinance.today_earnings}
+            />
+          </div>
+        </BoxWrapper>
+      </Col>
+      <Col span={18}>
         <BoxWrapper>
           <PageHeader title="提现" />
           <Modal
@@ -119,7 +140,8 @@ const Finance = () => {
           >
             <Form form={form}>
               <Form.Item name="earnings" label="可提现数额">
-                <Input style={{ width: 200 }} disabled suffix="元" />
+                {/* <Input style={{ width: 200 }} disabled suffix="元" /> */}
+                <InputNumber style={{ width: 200 }} disabled precision={4} />
               </Form.Item>
               <Form.Item
                 name="amount"

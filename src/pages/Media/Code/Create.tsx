@@ -1,4 +1,4 @@
-import { Steps, Row, Col, Spin, message, DatePicker } from "antd";
+import { Steps, Row, Col, Spin, message, DatePicker, Modal } from "antd";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { BoxWrapper } from "@/styles/wrapper";
@@ -32,6 +32,14 @@ const Create = () => {
   const getAppListR = useRequest(getAppList, {
     manual: true,
     onSuccess: (res) => {
+      if (!res.length) {
+        Modal.confirm({
+          title: "提示",
+          content: "暂时没有应用，请先去创建应用或者等待应用审核完成",
+          onOk: () => history.push("/flow/app"),
+          onCancel: () => history.push("/flow/app"),
+        });
+      }
       setAppList(res);
     },
   });
@@ -50,7 +58,7 @@ const Create = () => {
 
   useMount(() => {
     form.setFieldsValue({ code_type: getCodeType(urlState.adType) });
-    getAppListR.run();
+    getAppListR.run(true);
   });
 
   const handleSubmit = async () => {

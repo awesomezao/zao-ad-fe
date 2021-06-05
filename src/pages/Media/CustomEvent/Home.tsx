@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Space, Table, Form, Select, Row, Col } from "antd";
-import { getCustomBuriedList, IBuried } from "@/apis/buried";
+import { Space, Table, Form, Select, Row, Col,message } from "antd";
+import { getCustomBuriedList, IBuried,deleteEvent } from "@/apis/buried";
 import { useRequest } from "ahooks";
 import { useHistory } from "react-router-dom";
 import { BoxWrapper } from "@/styles/wrapper";
@@ -9,10 +9,13 @@ import ConfigOperation from "@/components/ConfigOperation";
 import PageHeader from "@/components/PageHeader";
 import AppPicker from "@/components/AppPicker";
 import { useCurrent } from "@/hooks/useCurrentPath";
+import useDeleteConfirm from "@/hooks/useDeleteConfirm";
+import { IApp } from "@/apis/app";
 
 const Home = () => {
   const [data, setData] = useState<IBuried[]>([]);
   const history = useHistory();
+  const [appList, setAppList] = useState<IApp[]>([]);
   const { sideMenu } = useSideMenu({
     title: "埋点",
     prePath: "/event",
@@ -27,6 +30,17 @@ const Home = () => {
     onSuccess: (res) => {
       setData(res.map((i) => ({ ...i, key: i._id })));
     },
+  });
+
+  const deleteEventR = useRequest(deleteEvent, {
+    manual: true,
+    onSuccess: (res) => {
+      message.success("删除成功");
+      getBuriedListR.run(appList[0]._id);
+    },
+  });
+  const { showDeleteConfirm } = useDeleteConfirm({
+    onOk: (event_id) => deleteEventR.run(event_id),
   });
 
   const columns = [
@@ -62,6 +76,12 @@ const Home = () => {
           >
             编辑
           </a>
+          <a
+            onClick={() => showDeleteConfirm(record._id)}
+            style={{ color: "#f16363" }}
+          >
+            删除
+          </a>
           <a onClick={() => redirect(`/event/report`)}>数据</a>
         </Space>
       ),
@@ -78,6 +98,7 @@ const Home = () => {
             <Col span={8}>
               <AppPicker
                 onRequestSuccess={(appList) => {
+                  setAppList(appList);
                   getBuriedListR.run(appList[0]._id);
                 }}
                 onAppChange={(app_id) => {

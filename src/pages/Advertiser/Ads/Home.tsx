@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { Space, Table, Row, Col } from "antd";
+import { Space, Table, Row, Col, message } from "antd";
 import { useRequest, useMount } from "ahooks";
 import { useHistory } from "react-router-dom";
 import { BoxWrapper } from "@/styles/wrapper";
 import ConfigOperation from "@/components/ConfigOperation";
 import PageHeader from "@/components/PageHeader";
-import { getAdsList, IAds } from "@/apis/ads";
+import { getAdsList, IAds, changeAdsStatus,deleteAds } from "@/apis/ads";
 import { getCodeType } from "@/utils";
 import { useCurrent } from "@/hooks/useCurrentPath";
 import AdsStatus from "@/components/AppStatus";
+import useStopConfirm from "@/hooks/useStopConfirm";
+import useDeleteConfirm from "@/hooks/useDeleteConfirm";
 
 const Home = () => {
   const history = useHistory();
@@ -20,6 +22,28 @@ const Home = () => {
     onSuccess: (res) => {
       setData(res);
     },
+  });
+
+  const changeAdsStatusR = useRequest(changeAdsStatus, {
+    manual: true,
+    onSuccess: (res) => {
+      message.success("操作成功");
+      getAdsListR.run();
+    },
+  });
+  const { showConfirm } = useStopConfirm({
+    onOk: (ads_id) => changeAdsStatusR.run(ads_id, "stop"),
+  });
+
+  const deleteAdsR = useRequest(deleteAds, {
+    manual: true,
+    onSuccess: (res) => {
+      message.success("删除成功");
+      getAdsListR.run();
+    },
+  });
+  const { showDeleteConfirm } = useDeleteConfirm({
+    onOk: (ads_id) => deleteAdsR.run(ads_id),
   });
 
   useMount(() => {
@@ -69,6 +93,23 @@ const Home = () => {
         <Space>
           <a onClick={() => history.push(`/ads/update?ads_id=${text._id}`)}>
             编辑
+          </a>
+          <a
+            onClick={() => {
+              if (record.status !== "stop") {
+                showConfirm(record._id);
+              } else {
+                changeAdsStatusR.run(record._id, "under_review");
+              }
+            }}
+          >
+            {record.status === "stop" ? "启用" : "停用"}
+          </a>
+          <a
+            onClick={() => showDeleteConfirm(record._id)}
+            style={{ color: "#f16363" }}
+          >
+            删除
           </a>
           <a onClick={() => redirect("/report/advertiser")}>数据</a>
         </Space>

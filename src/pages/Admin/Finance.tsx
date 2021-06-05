@@ -127,6 +127,7 @@ const Finance = () => {
             />
             <Statistic
               title="今日收益（元）"
+              precision={4}
               value={adminFinance.today_earnings}
             />
           </div>

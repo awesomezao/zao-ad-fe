@@ -32,7 +32,8 @@ export interface IUpdateCodeReq {
 export const updateCode = (req: IUpdateCodeReq): Promise<{}> =>
   axios.post("/code/update", req);
 
-export const getCodeList = (): Promise<ICode[]> => axios.get("/code/list");
+export const getCodeList = (running?: boolean): Promise<ICode[]> =>
+  axios.get("/code/list", { params: { running } });
 
 export const getFilterCodeList = (app_id: string): Promise<ICode[]> =>
   axios.get("/code/filter_list", { params: { app_id } });
@@ -50,3 +51,11 @@ export const getCodeName = (code_id: string): Promise<string> =>
 
 export const getCodeSummary = (): Promise<ISummary> =>
   axios.get("/code/summary");
+
+export const changeCodeStatus = (
+  code_id: string,
+  status: "stop" | "under_review"
+): Promise<{}> => axios.get("/code/status", { params: { code_id, status } });
+
+export const deleteCode = (code_id: string): Promise<{}> =>
+  axios.get("/code/delete", { params: { code_id } });

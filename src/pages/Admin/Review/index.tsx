@@ -7,8 +7,11 @@ import Code from "./Code";
 import Ads from "./Ads";
 import Recharge from "./Recharge";
 import Withdraw from "./Withdraw";
+import { useUser } from "@/hooks/useUser";
+import { useMount } from "ahooks";
 
 const Review = () => {
+  const { user } = useUser();
   const { sideMenu } = useSideMenu({
     title: "审核",
     prePath: "/admin",
@@ -21,6 +24,11 @@ const Review = () => {
     ],
   });
   const history = useHistory();
+  useMount(() => {
+    if (user.role !== "admin") {
+      history.push("/");
+    }
+  });
 
   return (
     <Row>

@@ -8,6 +8,7 @@ interface Props {
   onReject: () => void;
   loading?: boolean;
   width?: string;
+  margin?: string;
 }
 
 const FooterBtnGroup = (props: Props) => {
@@ -17,6 +18,7 @@ const FooterBtnGroup = (props: Props) => {
     onReject = () => {},
     loading = false,
     width,
+    margin = "",
   } = props;
   const history = useHistory();
   const handleCancel = () => {
@@ -30,7 +32,7 @@ const FooterBtnGroup = (props: Props) => {
   return (
     <BoxWrapper
       width={width}
-      margin="0"
+      margin={margin}
       css={{ display: "flex", justifyContent: "flex-end" }}
     >
       <Space>

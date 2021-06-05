@@ -64,6 +64,7 @@ const Summary = () => {
             />
             <Statistic
               title="今日收益（元）"
+              precision={4}
               value={mediaFinance.today_earnings}
             />
           </div>

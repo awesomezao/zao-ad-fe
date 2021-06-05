@@ -10,23 +10,44 @@ import {
   Form,
   InputNumber,
   message,
+  Statistic, Space
 } from "antd";
 import { useUser } from "@/hooks/useUser";
 import PageHeader from "@/components/PageHeader";
 import { recharge, getRechargeList, ICharge } from "@/apis/user";
 import { useMount, useRequest } from "ahooks";
 import AppStatus from "@/components/AppStatus";
+import { getAdvertiserFinanceInfo, IAdvertiserFinance } from "@/apis/user";
+import { useCurrent } from '@/hooks/useCurrentPath';
 
 const Finance = () => {
   const [data, setData] = useState<ICharge[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [form] = Form.useForm();
+  const {redirect} =useCurrent();
+  const { user } = useUser();
+
+  const [advertiserFinance, setAdvertiserFinance] =
+    useState<IAdvertiserFinance>({
+      _id: "",
+      user_id: "",
+      balance: 0,
+      today_cost: 0,
+      today_date_string: "",
+    });
 
   const getRechargeListR = useRequest(getRechargeList, {
     manual: true,
     onSuccess: (res) => {
       console.log(res);
       setData(res);
+    },
+  });
+
+  const getAdvertiserFinanceR = useRequest(getAdvertiserFinanceInfo, {
+    manual: true,
+    onSuccess: (res) => {
+      setAdvertiserFinance(res);
     },
   });
 
@@ -40,6 +61,7 @@ const Finance = () => {
   });
 
   useMount(() => {
+    getAdvertiserFinanceR.run();
     getRechargeListR.run();
   });
 
@@ -76,6 +98,28 @@ const Finance = () => {
   ];
   return (
     <Row justify="center">
+      <Col span={18}>
+        <BoxWrapper margin="30px 0 0 0">
+          <h2 style={{ fontSize: 20, marginBottom: 20 }}>hi, {user.name}</h2>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <Statistic
+              title={
+                <Space>
+                  <span>余额（元）</span>
+                  {/* <a onClick={() => redirect("/finance")}>去充值</a> */}
+                </Space>
+              }
+              precision={2}
+              value={advertiserFinance.balance}
+            />
+            <Statistic
+              title="今日广告花费（元）"
+              precision={4}
+              value={advertiserFinance.today_cost}
+            />
+          </div>
+        </BoxWrapper>
+      </Col>
       <Col span={18}>
         <BoxWrapper>
           <PageHeader title="充值" />

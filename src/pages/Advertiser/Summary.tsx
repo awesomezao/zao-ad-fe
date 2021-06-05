@@ -63,6 +63,7 @@ const Summary = () => {
             />
             <Statistic
               title="今日广告花费（元）"
+              precision={4}
               value={advertiserFinance.today_cost}
             />
           </div>

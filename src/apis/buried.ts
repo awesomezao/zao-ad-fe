@@ -78,3 +78,6 @@ export interface IGetFilterBuriedList extends IApp {
 }
 export const getFilterBuriedList = (): Promise<IGetFilterBuriedList[]> =>
   axios.get("/self/filter_list");
+
+export const deleteEvent = (event_id: string): Promise<{}> =>
+  axios.get("/self/delete", { params: { event_id } });
